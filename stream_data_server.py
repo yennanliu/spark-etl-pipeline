@@ -1,5 +1,6 @@
 from flask import Flask, stream_with_context, request, Response, flash                                                                                                                         
-from time import sleep                                                                                                                                                                         
+from time import sleep 
+import requests                                                                                                                                                                        
 
 app = Flask(__name__)                                                                                                                                                                          
 
@@ -19,12 +20,21 @@ def generate():
 @app.route('/stream_page')                                                                                                                                                                          
 def stream_view():                                                                                                                                                                             
     rows = generate()                                                                                                                                                                          
-    return Response(stream_template('template.html', rows=rows))   
+    return Response(stream_template('template.html', rows=rows)) 
+
+@app.route('/')
+def streamed_response():
+    def generate():
+        for i in range(10):
+            yield str('hello world')
+            yield str(i)
+            sleep(1)
+    return Response(stream_with_context(generate())) 
 
 @app.route('/stream')                                                                                                                                                                          
-def stream_data():                                                                                                                                                                             
-    rows = generate()                                                                                                                                                                          
-    return Response(stream_with_context(rows))     
-                                                                                                                        
+def stream_data():                                                                                                                                                                            
+    rows = generate()                                                                                                                                                                        
+    return Response(stream_with_context(generate()))    
+
 if __name__ == '__main__':   
     app.run(host='0.0.0.0', port=9999, debug=True)                                                                                                                                                                  
