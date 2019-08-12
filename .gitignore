@@ -1,0 +1,7 @@
+*.class 
+*.bk
+*.ck.crc 
+*.checkpoint*
+/stream/*.class
+/batch/*.class
+receivedBlockMetadata
