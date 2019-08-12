@@ -25,13 +25,14 @@ def process(time, rdd):
         # Do word count on table using SQL and print it
         wordCountsDataFrame = sqlContext.sql("select word, count(*) as total from words group by word")
         wordCountsDataFrame.show()
-    except:
+    except Exception as e:
+        print (e, '*** Failed to fetch stream')
         pass
 
 if __name__ == '__main__':
 	sc = SparkContext('local[2]', 'NetworkWordCount')
 	print (sc)	  
-	ssc = StreamingContext(sc, 60) # with batch duration = e.g. 60s
+	ssc = StreamingContext(sc, 10) # with batch duration = e.g. 10s
 	# set where the data streaming will come from e.g. localhost:9999
 	#lines = ssc.socketTextStream('localhost', 9999)
 	lines = ssc.socketTextStream(socket.gethostname(), 1243)
