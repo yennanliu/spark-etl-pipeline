@@ -1,6 +1,7 @@
 from pyspark.streaming import StreamingContext
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SQLContext, Row
+import socket
 
 # Lazily instantiated global instance of SQLContext
 def getSqlContextInstance(sparkContext):
@@ -32,7 +33,8 @@ if __name__ == '__main__':
 	print (sc)	  
 	ssc = StreamingContext(sc, 60) # with batch duration = e.g. 60s
 	# set where the data streaming will come from e.g. localhost:9999
-	lines = ssc.socketTextStream('localhost', 9999)
+	#lines = ssc.socketTextStream('localhost', 9999)
+	lines = ssc.socketTextStream(socket.gethostname(), 1243)
 	# split the 'lines' with a whitespace into a list of words
 	words = lines.flatMap(lambda line: line.split(' '))
 	# create a tuple of each word and 1 using 'map'
