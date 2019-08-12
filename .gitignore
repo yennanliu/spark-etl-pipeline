@@ -4,4 +4,5 @@
 *.checkpoint*
 /stream/*.class
 /batch/*.class
+stream/checkpoint*
 receivedBlockMetadata
