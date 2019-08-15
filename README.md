@@ -9,9 +9,9 @@
 	- https://www.svds.com/develop-spark-apps-on-yarn-using-docker/
 
 ## Dataset 
-- Twitch stream API
+- Twitch API (`stream`)
 	- https://dev.twitch.tv/docs/v5/reference/streams/
-- Dota2 API
+- Dota2 API (`stream`)
 	- https://docs.opendota.com/#section/Authentication
-- NYC TLC Trip Record dataset (taxi)
+- NYC TLC Trip Record dataset (taxi) (`big data`)
 	- https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page
