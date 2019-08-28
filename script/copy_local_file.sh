@@ -6,12 +6,12 @@
 check_file_exist(){
 
 if [[ -d $HOME/analysis ]]; 
-    then 
-        echo ">>>> file (dataset) already exist"
-    else 
-        echo ">>>> file (dataset) not exist, download them now..."
-        #cd ~ && git clone https://github.com/yennanliu/analysis.git
-        echo ">>>> download OK!"
+then 
+    echo ">>>> file (dataset) already exist"
+else 
+    echo ">>>> file (dataset) not exist, download them now..."
+    cd ~ && git clone https://github.com/yennanliu/analysis.git
+    echo ">>>> download OK!"
 fi
 }
 
