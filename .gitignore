@@ -6,3 +6,4 @@
 /batch/*.class
 stream/checkpoint*
 receivedBlockMetadata
+.DS_Store
