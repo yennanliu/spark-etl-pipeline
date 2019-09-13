@@ -25,3 +25,5 @@
 	- https://www.kaggle.com/stackoverflow/stackoverflow
 - Yelp dataset (`large dataset`)
 	- https://www.kaggle.com/yelp-dataset/yelp-dataset
+- Relational dataset (RDBMS online free dataset)
+	- https://relational.fit.cvut.cz/search
