@@ -14,6 +14,7 @@ RUN sed -n \
 # Installing given python3 version
 RUN apk update && \
     apk add python3=$PYTHON_VERSION
+    apk add scala
 # Reverting hack
 RUN sed -i 's|'$(cat curr_version.tmp)'/main|'$ALPINE_OLD_VERSION'/main|' \
     /etc/apk/repositories && \
