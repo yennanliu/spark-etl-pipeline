@@ -3,6 +3,7 @@ RUN apt-get update
 RUN apt-get install -y netcat
 RUN apt-get install -y jq
 RUN apt-get install -y telnet
+RUN apt-get install -y scala
 
 ENV SCALA_VERSION 2.12.2
 ENV SBT_VERSION 1.1.6
