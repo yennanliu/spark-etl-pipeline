@@ -17,4 +17,4 @@ RUN \
 
 WORKDIR /myapp
 ADD . /myapp
-RUN sbt assembly
+#RUN sbt assembly
