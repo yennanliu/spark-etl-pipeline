@@ -22,6 +22,7 @@ object SparkSQLDemo {
     df.show()
     // show the df schema 
     df.printSchema()
+    spark.stop()
   }
 
 }
