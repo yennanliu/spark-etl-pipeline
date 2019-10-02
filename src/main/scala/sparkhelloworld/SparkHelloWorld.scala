@@ -27,4 +27,3 @@ object SparkHelloWorld {
     
   }
 }
-© 2019 GitHub, Inc.
