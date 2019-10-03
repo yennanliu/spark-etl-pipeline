@@ -14,5 +14,7 @@ object load_creds_dev{
 
         config.getString("TWITTER_COSUMER_KEY")
         println (config.getString("TWITTER_COSUMER_KEY"))
-    } 
+        println (config.getString("TWITTER_COSUMER_SECRET"))
+        println (config.getString("TWITTER_TOKEN"))
+        println (config.getString("TWITTER_TOKEN_SECRET"))    } 
 } 
