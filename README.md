@@ -64,6 +64,10 @@ root@942744030b57:~ cd ../spark-word-count && sbt clean compile && sbt run
 </details>
 
 ## Dataset 
+
+<details>
+<summary>Dataset</summary>
+
 - Twitch API (`stream`)
 	- https://dev.twitch.tv/docs/v5/reference/streams/
 - Dota2 API (`stream`)
@@ -82,3 +86,5 @@ root@942744030b57:~ cd ../spark-word-count && sbt clean compile && sbt run
 	- https://www.kaggle.com/yelp-dataset/yelp-dataset
 - Relational dataset (RDBMS online free dataset)
 	- https://relational.fit.cvut.cz/search
+
+</details> 
