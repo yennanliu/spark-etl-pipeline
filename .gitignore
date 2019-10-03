@@ -13,3 +13,4 @@ target/*
 *.xml
 *.DS_Store
 *.class
+pair.parquet/
