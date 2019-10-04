@@ -20,8 +20,8 @@ object TransformOperation {
         val langNames = ssc.sparkContext.parallelize(Seq("de" -> "German", "en" -> "English", "es" -> "Spanish", "fr" -> "French", "jp"->"Japanese"))
 
         tweets.map(tweet => tweet.getLang -> tweet.getText)
-            .transform(_.join(langNames))
-                .print
+              .transform(_.join(langNames))
+              .print
 
         ssc.start
         ssc.awaitTermination()

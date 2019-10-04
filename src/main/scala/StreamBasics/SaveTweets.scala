@@ -19,7 +19,7 @@ object SaveTweets {
         println(">>>>> save stream...")
         
         tweets.repartition(1)
-            .saveAsTextFiles("output/SaveTweets/batch", "json")
+              .saveAsTextFiles("output/SaveTweets/batch", "json")
 
         ssc.start
         ssc.awaitTermination()

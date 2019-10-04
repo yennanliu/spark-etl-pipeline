@@ -1,6 +1,13 @@
 <h1 align="center">SPARK-ETL-PIPELINE</h1>
 <h4 align="center">demo various data fetch/transform process via Spark Scala </h4>
 
+## Prerequisites 
+
+1. Modify [config](https://github.com/yennanliu/spark-etl-pipeline/tree/master/config) with your `creds` to be able access services like data source, file system.. and so on. 
+2. Install SBT as scala dependency management tool 
+3. Install Java, Spark 
+
+
 ## Quick Start
 ```bash
 # STEP 0) 
