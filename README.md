@@ -3,7 +3,7 @@
 
 ## Prerequisites 
 
-1. Modify [config](https://github.com/yennanliu/spark-etl-pipeline/tree/master/config) with your `creds` to be able access services like data source, file system.. and so on. 
+1. Modify [config](https://github.com/yennanliu/spark-etl-pipeline/tree/master/config) with yours and rename them (e.g. `twitter.config.dev` -> `twitter.config`) to access services like data source, file system.. and so on. 
 2. Install SBT as scala dependency management tool 
 3. Install Java, Spark 
 
