@@ -16,3 +16,4 @@ target/*
 pair.parquet/
 twitter.config
 checkpointing
+checkpoints/

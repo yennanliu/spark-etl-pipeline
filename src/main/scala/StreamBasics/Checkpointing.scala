@@ -34,7 +34,7 @@ object Checkpointing {
         println(">>>>> spark checkpoint...")
 
         ssc.checkpoint(checkpointDirectory)
-        ssc.awaitTermination()
+        ssc
     }
 
     private def updateFunction(newValues: Seq[Int], runningCount: Option[Int]): Option[Int] = {
