@@ -19,6 +19,10 @@ object Stream2SQL {
 
     val sc = new SparkContext(conf)
 
+    val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+
+    import sqlContext.implicits._
+
     Logger.getRootLogger.setLevel(Level.ERROR)
 
     val tweets = TwitterUtils.createStream(ssc, None)
@@ -31,9 +35,11 @@ object Stream2SQL {
                       .flatMap(line => line.split(" "))
                       .map(word => (word, 1))
 
-    val sqlContext = new org.apache.spark.sql.SQLContext(sc)
-
-    import sqlContext.implicits._
+    // val tweets_info = tweets.foreachRDD{
+    //                     rdd => if (rdd.count() > 0){
+    //                         rdd.map( t => (t.getId, t.getUser.getName, t.getCreatedAt.getTime))
+    //                                                 }
+    //                                     }
 
     // val data = tweets.map { status =>
     // val tags = status.getHashtagEntities.map(_.getText.toLowerCase)
@@ -47,6 +53,7 @@ object Stream2SQL {
     // sqlContext.sql("select * from tmp").show()
     
     tweet_words.print
+    //tweets_info
     
     ssc.start
     ssc.awaitTermination()
