@@ -17,7 +17,7 @@ object Stream2SQL {
 
     val conf = new SparkConf().setAppName("Simple sql app")
 
-    val sc = new SparkContext(conf)
+    val sc = SparkContext.getOrCreate(conf)
 
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
 
