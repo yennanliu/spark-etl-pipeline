@@ -27,24 +27,22 @@ object ForEachRDD {
                 { println (" RDD count() > 0")}
         }
 
-
         tweets.foreachRDD{
-                rdd => if (rdd.count() > 0 ) 
-                { 
-                rdd
-                .map(t => "id : "  + t.getId + "," +
-                          "user : " + t.getUser.getName + "," + 
-                          "place : " + (if (t.getPlace == null) "" else t.getPlace.getName) + "," +
-                          "replay_to_screen_name : " + t.getInReplyToScreenName + "," + 
-                          "time : " + t.getCreatedAt.getTime + "," + 
-                          "text length : " + t.getText.length + "," + 
-                          "hashtag : " + t.getHashtagEntities.map(_.getText).headOption.getOrElse("")
-                      )
-                .collect()
-                .foreach(println)
-                }
+            rdd => if (rdd.count() > 0 ) 
+            { 
+            rdd
+            .map(t => "id : "  + t.getId + "," +
+                      "user : " + t.getUser.getName + "," + 
+                      "place : " + (if (t.getPlace == null) "" else t.getPlace.getName) + "," +
+                      "replay_to_screen_name : " + t.getInReplyToScreenName + "," + 
+                      "time : " + t.getCreatedAt.getTime + "," + 
+                      "text length : " + t.getText.length + "," + 
+                      "hashtag : " + t.getHashtagEntities.map(_.getText).headOption.getOrElse("")
+                  )
+            .collect()
+            .foreach(println)
+            }
         }
-
 
         ssc.start
         ssc.awaitTermination()
