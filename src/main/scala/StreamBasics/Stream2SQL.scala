@@ -20,18 +20,20 @@ object Stream2SQL {
         val stream = TwitterUtils.createStream(ssc, None)
 
         stream
-            .map(p => (p.getId , p.getUser.getName, p.getCreatedAt.getTime))
+            .map(p => (p.getId , p.getUser.getName, p.getCreatedAt.getTime, p.getText.length))
             .foreachRDD { rdd =>
                 val spark = SparkSession.builder.config(rdd.sparkContext.getConf).getOrCreate()
                 import spark.implicits._
 
                 // Convert RDD to DataFrame
-                val df = rdd.toDF("id", "username", "time")
+                val df = rdd.toDF("id", "username", "time", "text_length")
 
                 // Create a temporary view
                 df.createOrReplaceTempView("twitter")
 
                 spark.sql("select id, username, from_unixtime(time) AS created from twitter").show()
+
+                spark.sql("select text_length, count(*) from twitter group by 1 order by 2 desc").show()
             }
 
         ssc.start
