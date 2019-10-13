@@ -1,61 +1,40 @@
-package StreamHelloworld
+package SparkStreamingBasics
 
 import org.apache.log4j.{Level, Logger}
-import org.apache.spark.streaming.twitter.TwitterUtils
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-import org.apache.spark.SparkContext
-import org.apache.spark.SparkConf
-
+import org.apache.spark.streaming.twitter.TwitterUtils
 import util.Twitter
 
-
 object Stream2SQL {
-  def main(args: Array[String]): Unit = {
-    Twitter.initialize()
+    def main(args: Array[String]): Unit = {
 
-    val ssc = new StreamingContext("local[*]", "PrintTwitterStream", Seconds(1))
+        Twitter.initialize()
 
-    val conf = new SparkConf().setAppName("Simple sql app")
+        val ssc = new StreamingContext("local[*]", "SqlOperations", Seconds(10))
 
-    val sc = SparkContext.getOrCreate(conf)
+        Logger.getRootLogger.setLevel(Level.ERROR)
 
-    val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+        //val stream = RedditUtils.createPageStream(Reddit.auth, List("sports"), ssc, pollingPeriodInSeconds=10)
 
-    import sqlContext.implicits._
+        val stream = TwitterUtils.createStream(ssc, None)
 
-    Logger.getRootLogger.setLevel(Level.ERROR)
+        stream
+            .map(p => (p.getId , p.getUser.getName, p.getCreatedAt.getTime))
+            .foreachRDD { rdd =>
+                val spark = SparkSession.builder.config(rdd.sparkContext.getConf).getOrCreate()
+                import spark.implicits._
 
-    val tweets = TwitterUtils.createStream(ssc, None)
+                // Convert RDD to DataFrame
+                val df = rdd.toDF("id", "username", "time")
 
-    println(">>>>> start stream...")
+                // Create a temporary view
+                df.createOrReplaceTempView("twitter")
 
-    tweets.map(status => status.getText).print
+                spark.sql("select id, username, from_unixtime(time) AS created from twitter").show()
+            }
 
-    val tweet_words = tweets.map(status => status.getText)
-                      .flatMap(line => line.split(" "))
-                      .map(word => (word, 1))
-
-    // val tweets_info = tweets.foreachRDD{
-    //                     rdd => if (rdd.count() > 0){
-    //                         rdd.map( t => (t.getId, t.getUser.getName, t.getCreatedAt.getTime))
-    //                                                 }
-    //                                     }
-
-    // val data = tweets.map { status =>
-    // val tags = status.getHashtagEntities.map(_.getText.toLowerCase)
-    // (status.getText, tags)
-    // }
-
-    // data.foreachRDD { rdd =>
-    // rdd.toDF().registerTempTable("tmp")
-    // }
-
-    // sqlContext.sql("select * from tmp").show()
-    
-    tweet_words.print
-    //tweets_info
-    
-    ssc.start
-    ssc.awaitTermination()
-  }
+        ssc.start
+        ssc.awaitTermination()
+    }
 }

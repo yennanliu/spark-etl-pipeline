@@ -7,6 +7,7 @@ import util.Twitter
 
 object PrintTwitterStream {
   def main(args: Array[String]): Unit = {
+    
     Twitter.initialize()
 
     val ssc = new StreamingContext("local[*]", "PrintTwitterStream", Seconds(1))
