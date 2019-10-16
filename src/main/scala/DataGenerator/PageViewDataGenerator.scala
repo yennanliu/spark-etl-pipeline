@@ -18,7 +18,6 @@ object PageView extends Serializable {
     new PageView(parts(0), parts(1).toInt, parts(2).toInt, parts(3).toInt)
   }
 }
-
 // scalastyle:off
 /**
  * Generates streaming events to simulate page views on a website.
@@ -72,7 +71,6 @@ object PageViewDataGenerator {
     //   System.exit(1)
     // }
 
-
     // val port = args(0).toInt
     // val viewsPerSecond = args(1).toFloat
     // val sleepDelayMs = (1000.0 / viewsPerSecond).toInt
@@ -102,4 +100,3 @@ object PageViewDataGenerator {
     }
   }
 }
-// scalastyle:on println

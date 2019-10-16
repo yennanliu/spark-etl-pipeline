@@ -1,9 +1,7 @@
-  
-package StructuredStreaming
+  package StructuredStreaming
 
 import java.sql.Timestamp
 import java.util.Date
-
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.apache.spark.sql.expressions.scalalang.typed

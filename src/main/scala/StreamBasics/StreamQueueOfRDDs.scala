@@ -9,20 +9,15 @@ import scala.collection.mutable
 object StreamQueueOfRDDs {
   def main(args: Array[String]): Unit = {
     val ssc = new StreamingContext("local[*]", "StreamQueueOfRDDs", Seconds(1))
-
     Logger.getRootLogger.setLevel(Level.ERROR)
-
     val queue = new mutable.Queue[RDD[String]]
     val rdd = ssc.sparkContext.parallelize(Seq("received", "some", "data"))
     queue.enqueue(rdd)
 
     println(">>>>> start stream...")
-
     val stream = ssc.queueStream(queue)
     stream.print()
-
     ssc.start
-
     println(">>>>> start stream queue...")
 
     for (i <- 1 to 10) {

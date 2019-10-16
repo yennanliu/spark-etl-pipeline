@@ -6,6 +6,7 @@ import org.apache.spark.sql.functions._
 
 object StructuredStreamingOperations {
     def main(args: Array[String]): Unit = {
+        
         val spark = SparkSession
             .builder
             .appName("StructuredStreamingOperations")

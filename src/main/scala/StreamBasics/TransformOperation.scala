@@ -7,6 +7,7 @@ import util.Twitter
 
 object TransformOperation {
     def main(args: Array[String]): Unit = {
+        
         Twitter.initialize()
 
         val ssc = new StreamingContext("local[*]", "TransformOperation", Seconds(2))

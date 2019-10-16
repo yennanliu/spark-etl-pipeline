@@ -38,7 +38,6 @@ object SparkRDDRelation {
     // The results of SQL queries are themselves RDDs and support all normal RDD functions. The
     // items in the RDD are of type Row, which allows you to access each column by ordinal.
     val rddFromSql = spark.sql("SELECT key, value FROM records WHERE key < 10")
-
     println("Result of RDD.map:")
     rddFromSql.rdd.map(row => s"Key: ${row(0)}, Value: ${row(1)}").collect().foreach(println)
 
@@ -57,7 +56,6 @@ object SparkRDDRelation {
     // These files can also be used to create a temporary view.
     parquetFile.createOrReplaceTempView("parquetFile")
     spark.sql("SELECT * FROM parquetFile").collect().foreach(println)
-
     spark.stop()
   }
 }

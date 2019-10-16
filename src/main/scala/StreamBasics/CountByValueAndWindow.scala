@@ -23,7 +23,6 @@ object CountByValueAndWindow {
             .map(_.getHashtagEntities.head.getText.length)
             .countByValueAndWindow(Seconds(5), Seconds(10))
             .print
-
         ssc.start
         ssc.awaitTermination()
     }

@@ -11,6 +11,7 @@ import scala.reflect.io.File
 
 object TweetProducer {
     def main(args: Array[String]): Unit = {
+
         Twitter.initialize()
 
         val ssc = new StreamingContext("local[2]", "TweetProducer", Seconds(1))
@@ -23,14 +24,12 @@ object TweetProducer {
 
         println(">>>>> start stream and save as temp-file, file...")
 
-        tweets.
-        filter(_.getLang == "en").
-        foreachRDD{rdd =>
+        tweets.filter(_.getLang == "en")
+              .foreachRDD{rdd =>
             if (rdd.count() > 0) {
                 val fileName = "tweets_" + System.currentTimeMillis()
                 val tmpPath = new java.io.File(tmpDirectory + fileName)
                 val path = new java.io.File(directory + fileName)
-
                 File(tmpPath.toString())
                     .writeAll( rdd
                     .map(t => t.getId + "," + t.getUser.getName + "," + (if (t.getPlace == null) "" else t.getPlace.getName)

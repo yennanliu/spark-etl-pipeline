@@ -2,7 +2,6 @@ package PerformanceAndEventQueues
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-
 import org.apache.spark.streaming.kafka._
 import kafka.serializer.StringDecoder
 
@@ -26,7 +25,6 @@ object KafkaIntegration {
             .map(_.split(":"))
             .map(e => "User " + e(2) + " ordered a product!")
                 .print
-
         ssc.checkpoint("kafkaIntegration")
         ssc.start
         ssc.awaitTermination()

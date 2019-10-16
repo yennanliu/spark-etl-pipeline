@@ -7,6 +7,7 @@ import org.apache.spark.streaming.Seconds
 
 object WindowOperation {
     def main(args: Array[String]): Unit = {
+        
         val spark = SparkSession
             .builder
             .appName("WindowOperations")

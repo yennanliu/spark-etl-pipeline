@@ -7,6 +7,7 @@ import util.Twitter
 
 object StreamWordCount {
     def main(args: Array[String]): Unit = {
+        
         Twitter.initialize()
 
         val ssc = new StreamingContext("local[*]", "StreamTransformations", Seconds(1))

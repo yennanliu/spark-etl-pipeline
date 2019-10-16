@@ -1,5 +1,3 @@
-
-// scalastyle:off println
 package DataGenerator
 
 import org.apache.spark.examples.streaming.StreamingExamples
@@ -29,7 +27,6 @@ object PageViewStreamReader {
     // }
     
     //StreamingExamples.setStreamingLogLevels()
-
     // val metric = args(0)
     // val host = args(1)
     // val port = args(2).toInt
@@ -53,7 +50,6 @@ object PageViewStreamReader {
     // Return a sliding window of page views per URL in the last ten seconds
     val slidingPageCounts = pageViews.map(view => view.url)
                                      .countByValueAndWindow(Seconds(10), Seconds(2))
-
 
     // Return the rate of error pages (a non 200 status) in each zip code over the last 30 seconds
     val statusesPerZipCode = pageViews.window(Seconds(30), Seconds(2))
@@ -103,4 +99,3 @@ object PageViewStreamReader {
     ssc.awaitTermination()
   }
 }
-// scalastyle:on println
