@@ -33,9 +33,11 @@ object PageView extends Serializable {
  */
 // scalastyle:on
 object PageViewDataGenerator {
-  val pages = Map("http://foo.com/" -> .7,
+  val pages = Map("http://foo.com/" -> 0.5,
                   "http://foo.com/news" -> 0.2,
-                  "http://foo.com/contact" -> .1)
+                  "http://foo.com/newsx" -> 0.1,
+                  "http://foo.com/contact" -> 0.1,
+                  "http://foo.com/contactx" -> 0.1)
   val httpStatus = Map(200 -> .95,
                        404 -> .05)
   val userZipCode = Map(94709 -> .5,
