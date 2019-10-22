@@ -7,6 +7,8 @@ scalaVersion := "2.11.8"
 
 val sparkVersion = "2.3.0"
 
+resolvers += Resolver.sonatypeRepo("snapshots")
+
 libraryDependencies ++= Seq(
   // config
   "com.typesafe" % "config" % "1.2.1", 
@@ -22,7 +24,8 @@ libraryDependencies ++= Seq(
   "org.apache.spark" % "spark-streaming-kafka-0-8_2.11" % "2.2.1",
   "org.apache.spark" %% "spark-streaming-kinesis-asl" % "2.2.1",
   "org.apache.bahir" %% "spark-streaming-twitter" % "2.3.1",
-  "com.github.catalystcode" %% "streaming-reddit" % "0.0.1"
+  "com.github.catalystcode" %% "streaming-reddit" % "0.0.1",
+  "com.danielasfregola" %% "twitter4s" % "6.1"
 )
 
 conflictManager := ConflictManager.latestRevision
