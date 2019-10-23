@@ -92,5 +92,7 @@ root@942744030b57:~ cd ../spark-word-count && sbt clean compile && sbt run
 	- https://www.kaggle.com/yelp-dataset/yelp-dataset
 - Relational dataset (RDBMS online free dataset)
 	- https://relational.fit.cvut.cz/search
-
+- Awesome public streaming date
+	- https://github.com/ColinEberhardt/awesome-public-streaming-datasets
+	
 </details> 
