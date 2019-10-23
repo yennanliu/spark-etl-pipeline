@@ -8,11 +8,6 @@ object SparkRDDHelloworld{
     def main(args: Array[String]){
 
         val conf = new SparkConf().setMaster("local[*]").setAppName("SparkRDDHelloworld")
-
-        // var spark : SparkSession = SparkSession.builder
-        //                                     .config(conf)
-        //                                     .config("spark.master", "local")
-        //                                     .getOrCreate()
         var sc = new SparkContext(conf)
         sc.setLogLevel("ERROR")
         print (">>>>>>>>>>")
