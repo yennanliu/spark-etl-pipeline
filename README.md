@@ -94,5 +94,8 @@ root@942744030b57:~ cd ../spark-word-count && sbt clean compile && sbt run
 	- https://relational.fit.cvut.cz/search
 - Awesome public streaming date
 	- https://github.com/ColinEberhardt/awesome-public-streaming-datasets
-	
+- NYC SUBWAY REALTIME API
+	- http://datamine.mta.info/
+	- https://erikbern.com/2016/04/04/nyc-subway-math.html
+	- https://github.com/erikbern/mta
 </details> 
