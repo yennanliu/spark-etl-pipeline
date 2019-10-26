@@ -24,6 +24,10 @@ object SparkProcessGameRDD{
         df.show()
         // show the df schema 
         df.printSchema()
+        var dfRDD = df.rdd
+        dfRDD.take(10).foreach(println)
+        var game_id = dfRDD.map(x => x(1))
+        game_id.take(30).foreach(println)
         // val lines = sc.textFile(filePath)
         // val words = lines.flatMap(line => line.split(" "))
         // val counts = words.map(word => (word, 1)).reduceByKey { case (x, y) => x + y }
