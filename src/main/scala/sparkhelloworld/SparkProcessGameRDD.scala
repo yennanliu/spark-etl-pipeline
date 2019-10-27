@@ -1,8 +1,11 @@
 package sparkhelloworld 
-
+// spark 
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession 
 import org.apache.spark.sql.SaveMode
+// scala 
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
 object SparkProcessGameRDD{
 
@@ -35,6 +38,10 @@ object SparkProcessGameRDD{
         // event timestamp
         var event_timestamp = dfRDD.map(x => x(4)).filter(x => x != null)
         event_timestamp.take(30).foreach(println)
+
+        val format = new java.text.SimpleDateFormat("yyyy-MM-dd")
+        var event_date = dfRDD.map(x => x(4))//.map(x => x.substring(0,10))
+        event_date.take(30)
         // platform count
         var platform_count = dfRDD.map(x => (x(8),1)).reduceByKey{case (x, y) => x + y}
         platform_count.collect().foreach(println)
