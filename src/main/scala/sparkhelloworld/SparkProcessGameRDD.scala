@@ -26,21 +26,19 @@ object SparkProcessGameRDD{
         df.show()
         // show the df schema 
         df.printSchema()
+        // game df rdd 
         var dfRDD = df.rdd
         dfRDD.take(10).foreach(println)
+        // battle id 
         var battle_id = dfRDD.map(x => x(1)).filter(x => x != null) 
         battle_id.take(30).foreach(println)
+        // event timestamp
         var event_timestamp = dfRDD.map(x => x(4)).filter(x => x != null)
         event_timestamp.take(30).foreach(println)
-        //var platform_count = dfRDD.map(x => x(8)).filter(x => x != null).map(x => (x(8),1))
-        var platform_count = dfRDD.map(x => (x(8),1))
-        platform_count.take(30).foreach(println)
-
-
-        // val lines = sc.textFile(filePath)
-        // val words = lines.flatMap(line => line.split(" "))
-        // val counts = words.map(word => (word, 1)).reduceByKey { case (x, y) => x + y }
-        //counts.collect().foreach(println)
+        // platform count
+        var platform_count = dfRDD.map(x => (x(8),1)).reduceByKey{case (x, y) => x + y}
+        platform_count.collect().foreach(println)
+         
         sc.stop()
         print ("SparkRDDHelloworld")
         print (">>>>>>>>>>")
