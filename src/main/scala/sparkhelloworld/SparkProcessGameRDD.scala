@@ -45,6 +45,10 @@ object SparkProcessGameRDD{
         // platform count
         var platform_count = dfRDD.map(x => (x(8),1)).reduceByKey{case (x, y) => x + y}
         platform_count.collect().foreach(println)
+
+        // player payment aggregate (USD) 
+        var player  = dfRDD.map(x => (x(18),x(16))).filter{case (x,y) => y != null}//.map{ case (x,y) => (x, y.toFloat)}
+        player.take(50).foreach(println)
          
         sc.stop()
         print ("SparkRDDHelloworld")
