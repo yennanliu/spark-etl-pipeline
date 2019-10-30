@@ -17,3 +17,5 @@ pair.parquet/
 twitter.config
 checkpointing
 checkpoints/
+derby.log
+metastore_db/
