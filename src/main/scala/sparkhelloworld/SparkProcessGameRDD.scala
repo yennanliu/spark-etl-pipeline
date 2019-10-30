@@ -3,6 +3,7 @@ package sparkhelloworld
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession 
 import org.apache.spark.sql.SaveMode
+import org.apache.spark.sql.functions.{col, udf}
 // scala 
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -46,10 +47,22 @@ object SparkProcessGameRDD{
         var platform_count = dfRDD.map(x => (x(8),1)).reduceByKey{case (x, y) => x + y}
         platform_count.collect().foreach(println)
 
-        // player payment aggregate (USD) 
+        // player payment aggregate (USD) via RDD  
         var player  = dfRDD.map(x => (x(18),x(16))).filter{case (x,y) => y != null}//.map{ case (x,y) => (x, y.toFloat)}
-        player.take(50).foreach(println)
-         
+        player.take(30).foreach(println)
+
+        // player payment aggregate (USD) via SQL 
+        df.createOrReplaceTempView("war_data")
+        spark.sql("SELECT user_id, sum(usd_cost) FROM war_data group by 1 order by 2 desc limit 3").collect().foreach(println)
+    
+        // sql UDF 
+       // def string2float(s: String): String = {s.toFloat}
+        def plushundred(s: Float): Float = {s.toFloat + 100}
+        //val string2floatUdf = udf(string2float)
+        //val plushundredUdf = udf(plushundred _)
+        val plushundredUdf = udf[Float, Float](plushundred)
+        df.filter($"usd_cost".isNotNull).select(plushundredUdf(col("usd_cost"))).collect().foreach(println)
+
         sc.stop()
         print ("SparkRDDHelloworld")
         print (">>>>>>>>>>")
