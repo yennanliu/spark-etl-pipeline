@@ -14,9 +14,11 @@ object SparkProcessGameRDD{
     def main(args: Array[String]){
 
         val conf = new SparkConf()
-                       .setMaster("local[*]")
-                       .setAppName("SparkRDDHelloworld")
+                   .setMaster("local[*]")
+                   .setAppName("SparkRDDHelloworld")
+
         var sc = new SparkContext(conf)
+
         val spark = SparkSession
                     .builder
                     .appName("Spark sql demo")
@@ -24,13 +26,16 @@ object SparkProcessGameRDD{
                     .getOrCreate()
 
         import spark.implicits._
+
         sc.setLogLevel("ERROR")
         print (">>>>>>>>>>")
         var filePath = "data/war_data.json"
         val df = spark.read.json(filePath)
         df.show()
+
         // show the df schema 
         df.printSchema()
+
         // >>>>>>>>>> DF
         val df_agg = df.groupBy("user_id").agg(
         sum($"usd_cost") as "usd_sum",
@@ -63,8 +68,8 @@ object SparkProcessGameRDD{
         df.createOrReplaceTempView("war_data")
         spark.sql("SELECT user_id, sum(usd_cost) FROM war_data group by 1 order by 2 desc limit 3").collect().foreach(println)
     
-        // sql UDF 
-       // def string2float(s: String): String = {s.toFloat}
+        // >>>>>>>>>> SQL 
+        // def string2float(s: String): String = {s.toFloat}
         def plushundred(s: Float): Float = {s.toFloat + 100}
         //val string2floatUdf = udf(string2float)
         //val plushundredUdf = udf(plushundred _)
