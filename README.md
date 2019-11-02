@@ -41,7 +41,7 @@ type=bind,\
 source="$(pwd)"/.,\
 target=/spark-etl-pipeline \
 -i -t spark_env \
-/bin/bash  -c "cd ../spark-etl-pipeline && sbt clean compile && sbt run && sbt assembly"
+/bin/bash  -c "cd ../spark-etl-pipeline && sbt clean compile && && sbt assembly && spark-submit spark-word-count/target/scala-2.11/spark-etl-pipeline-assembly-1.0.jar"
 
 # STEP 3') : STEP BY STEP : access docker -> sbt clean compile -> sbt run -> sbt assembly -> spark-submit 
 # docker run 
@@ -53,6 +53,8 @@ target=/spark-etl-pipeline \
 /bin/bash 
 # inside docker bash 
 root@942744030b57:~ cd ../spark-etl-pipeline && sbt clean compile && sbt run 
+
+root@942744030b57:~ cd ../spark-etl-pipeline && spark-submit spark-word-count/target/scala-2.11/spark-etl-pipeline-assembly-1.0.jar
 
 ```
 
