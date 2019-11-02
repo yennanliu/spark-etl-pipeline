@@ -4,6 +4,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession 
 import org.apache.spark.sql.SaveMode
 import org.apache.spark.sql.functions.{col, udf}
+import org.apache.spark.sql.functions._
 // scala 
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -30,6 +31,13 @@ object SparkProcessGameRDD{
         df.show()
         // show the df schema 
         df.printSchema()
+        // >>>>>>>>>> DF
+        val df_agg = df.groupBy("user_id").agg(
+        sum($"usd_cost") as "usd_sum",
+        count($"battle_id") as "battle_count")
+        df_agg.take(30).foreach(println)
+
+        // >>>>>>>>>> RDD
         // game df rdd 
         var dfRDD = df.rdd
         dfRDD.take(10).foreach(println)
