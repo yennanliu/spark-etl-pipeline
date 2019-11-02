@@ -27,10 +27,10 @@ $ sbt run
 ## Quick Start (Docker)
 ```bash 
 # STEP 0) 
-$ git clone https://github.com/yennanliu/spark-scala-word-count.git
+$ git clone https://github.com/yennanliu/spark-etl-pipeline.git
 
 # STEP 1) 
-$ cd spark-scala-word-count
+$ cd spark-etl-pipeline
 
 # STEP 2) docker build 
 $ docker build . -t spark_env
@@ -39,20 +39,20 @@ $ docker build . -t spark_env
 $ docker run  --mount \
 type=bind,\
 source="$(pwd)"/.,\
-target=/spark-word-count \
+target=/spark-etl-pipeline \
 -i -t spark_env \
-/bin/bash  -c "cd ../spark-word-count && sbt clean compile && sbt run && sbt assembly"
+/bin/bash  -c "cd ../spark-etl-pipeline && sbt clean compile && sbt run && sbt assembly"
 
 # STEP 3') : STEP BY STEP : access docker -> sbt clean compile -> sbt run -> sbt assembly -> spark-submit 
 # docker run 
 $ docker run  --mount \
 type=bind,\
 source="$(pwd)"/.,\
-target=/spark-word-count \
+target=/spark-etl-pipeline \
 -i -t spark_env \
 /bin/bash 
 # inside docker bash 
-root@942744030b57:~ cd ../spark-word-count && sbt clean compile && sbt run 
+root@942744030b57:~ cd ../spark-etl-pipeline && sbt clean compile && sbt run 
 
 ```
 
