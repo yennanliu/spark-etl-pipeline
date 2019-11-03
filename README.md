@@ -1,6 +1,17 @@
 <h1 align="center">SPARK-ETL-PIPELINE</h1>
 <h4 align="center">demo various data fetch/transform process via Spark Scala </h4>
 
+<p align="center">
+<!--- travis -->
+<a href="https://travis-ci.org/yennanliu/spark-etl-pipeline"><img src="https://travis-ci.org/yennanliu/spark-etl-pipeline.svg?branch=master"></a>
+<!--- PR -->
+<a href="https://github.com/yennanliu/spark-etl-pipeline/pulls"><img src="https://img.shields.io/badge/PRs-welcome-6574cd.svg"></a>
+<!--- notebooks mybinder -->
+<a href="https://mybinder.org/v2/gh/yennanliu/spark-etl-pipeline/master"><img src="https://mybinder.org/badge_logo.svg"></a>
+<!--- hit count -->
+<a href="http://hits.dwyl.io/yennanliu/spark-etl-pipeline"><img src="http://hits.dwyl.io/yennanliu/spark-etl-pipeline.svg"></a>
+</p>
+
 ## Prerequisites 
 
 1. Modify [config](https://github.com/yennanliu/spark-etl-pipeline/tree/master/config) with yours and rename them (e.g. `twitter.config.dev` -> `twitter.config`) to access services like data source, file system.. and so on. 
