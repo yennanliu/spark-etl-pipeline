@@ -60,7 +60,12 @@ object SparkProcessTitanic{
         var df_passenger_pclass_age_fare_agg = df_passenger_pclass_age_fare.groupBy("PassengerId").agg(
                                                  sum($"Age") as "sum_Age",
                                                  count($"Age") as "count_Age")
-        df_passenger_pclass_age_fare_agg.take(30).foreach(println)
+        df_passenger_pclass_age_fare_agg.show()
+
+        // RDD 
+        var passenger_pclass_age_fare_rdd = df_passenger_pclass_age_fare.rdd 
+        var age_fare_count = passenger_pclass_age_fare_rdd.map( x => (x(2), x(3)))
+        age_fare_count.collect().foreach(println)
 
         sc.stop() 
 }
