@@ -61,14 +61,19 @@ object SparkProcessGameRDD{
         platform_count.collect().foreach(println)
 
         // player payment aggregate (USD) via RDD  
-        var player  = dfRDD.map(x => (x(18),x(16))).filter{case (x,y) => y != null}//.map{ case (x,y) => (x, y.toFloat)}
-        player.take(30).foreach(println)
+        var df_player = df.filter("usd_cost is not null").select("user_id", "usd_cost")//.as[(String, Float)]
+        val player_rdd = df_player.rdd
+        //var player  = player_rdd.map(x => (x(0),x(1))).filter{case (x,y) => y != null}//.map{ case (x,y) => (x, y.toFloat)}
+        player_rdd.take(30).foreach(println)
 
+        //var player  = dfRDD.map(x => (x(18),x(16))).filter{case (x,y) => y != null}.map{ case (x,y) => (x, y.values)}
+        //player.take(30).foreach(println)
+
+        // >>>>>>>>>> SQL 
         // player payment aggregate (USD) via SQL 
         df.createOrReplaceTempView("war_data")
         spark.sql("SELECT user_id, sum(usd_cost) FROM war_data group by 1 order by 2 desc limit 3").collect().foreach(println)
     
-        // >>>>>>>>>> SQL 
         // def string2float(s: String): String = {s.toFloat}
         def plushundred(s: Float): Float = {s.toFloat + 100}
         //val string2floatUdf = udf(string2float)
