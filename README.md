@@ -3,7 +3,7 @@
 
 <p align="center">
 <!--- travis -->
-<a href="https://travis-ci.org/yennanliu/spark-etl-pipeline"><img src="https://travis-ci.org/yennanliu/spark-etl-pipeline.svg?branch=master"></a>
+<a href="https://travis-ci.com/yennanliu/spark-etl-pipeline"><img src="https://travis-ci.org/yennanliu/spark-etl-pipeline.svg?branch=master"></a>
 <!--- PR -->
 <a href="https://github.com/yennanliu/spark-etl-pipeline/pulls"><img src="https://img.shields.io/badge/PRs-welcome-6574cd.svg"></a>
 <!--- notebooks mybinder -->
@@ -11,6 +11,7 @@
 <!--- hit count -->
 <a href="http://hits.dwyl.io/yennanliu/spark-etl-pipeline"><img src="http://hits.dwyl.io/yennanliu/spark-etl-pipeline.svg"></a>
 </p>
+
 
 ## Prerequisites 
 
@@ -20,6 +21,7 @@
 
 
 ## Quick Start
+
 ```bash
 # STEP 0) 
 $ git clone https://github.com/yennanliu/spark-etl-pipeline.git && cd spark-etl-pipeline 
@@ -36,6 +38,7 @@ $ sbt run
 ```
 
 ## Quick Start (Docker)
+
 ```bash 
 # STEP 0) 
 $ git clone https://github.com/yennanliu/spark-etl-pipeline.git
@@ -68,6 +71,32 @@ root@942744030b57:~ cd ../spark-etl-pipeline && sbt clean compile && sbt run
 root@942744030b57:~ cd ../spark-etl-pipeline && spark-submit spark-etl-pipeline/target/scala-2.11/spark-etl-pipeline-assembly-1.0.jar
 
 ```
+
+## Process 
+
+```
+sbt clean compile -> sbt test -> sbt run -> sbt assembly -> spark-submit <spark-script>jar
+```
+
+## File structure
+
+```
+# ├── Dockerfile         : Dockerfile make scala spark env 
+# ├── README.md
+# ├── archived           : legacy spark scripts in python/java...
+# ├── build.sbt          : (scala) sbt file build spark scala dependency 
+# ├── config             : config for various services. e.g. s3, DB, hive..
+# ├── data               : sample data for some spark scripts demo
+# ├── output             : where the spark stream/batch output to  
+# ├── project            : (scala) other sbt setting : plugins.sbt, build.properties...
+# ├── python             : helper python script 
+# ├── run_all_process.sh : script demo run minimum end-to-end spark process
+# ├── script             : helper shell script
+# ├── src                : (scala) MAIN SCALA SPARK TESTS/SCRIPTS 
+# ├── target             : where the final complied jar output to  (e.g. target/scala-2.11/spark-etl-pipeline-assembly-1.0.jar)
+# └── travis_build.sh    : travis build file
+```
+
 
 ## Ref 
 
