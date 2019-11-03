@@ -59,13 +59,13 @@ object SparkProcessGameRDD{
         // platform count
         var platform_count = dfRDD.map(x => (x(8),1)).reduceByKey{case (x, y) => x + y}
         platform_count.collect().foreach(println)
-
         // player payment aggregate (USD) via RDD  
-        var df_player = df.filter("usd_cost is not null").select("user_id", "usd_cost")//.as[(String, Float)]
+        // var df_player = df.filter("usd_cost is not null").select("user_id", "usd_cost").as[(String, String)]
+        var df_player = df.na.fill("0", Seq("usd_cost")).select("user_id", "usd_cost")
         val player_rdd = df_player.rdd
-        //var player  = player_rdd.map(x => (x(0),x(1))).filter{case (x,y) => y != null}//.map{ case (x,y) => (x, y.toFloat)}
         player_rdd.take(30).foreach(println)
 
+        //var player  = player_rdd.map(x => (x(0),x(1))).filter{case (x,y) => y != null}//.map{ case (x,y) => (x, y.toFloat)}
         //var player  = dfRDD.map(x => (x(18),x(16))).filter{case (x,y) => y != null}.map{ case (x,y) => (x, y.values)}
         //player.take(30).foreach(println)
 
