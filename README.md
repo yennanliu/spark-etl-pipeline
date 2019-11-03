@@ -3,7 +3,7 @@
 
 <p align="center">
 <!--- travis -->
-<a href="https://travis-ci.com/yennanliu/spark-etl-pipeline"><img src="https://travis-ci.org/yennanliu/spark-etl-pipeline.svg?branch=master"></a>
+<a href="https://travis-ci.com/yennanliu/spark-etl-pipeline"><img src="https://travis-ci.com/yennanliu/spark-etl-pipeline.svg?branch=master"></a>
 <!--- PR -->
 <a href="https://github.com/yennanliu/spark-etl-pipeline/pulls"><img src="https://img.shields.io/badge/PRs-welcome-6574cd.svg"></a>
 <!--- notebooks mybinder -->
