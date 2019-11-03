@@ -12,12 +12,37 @@
 <a href="http://hits.dwyl.io/yennanliu/spark-etl-pipeline"><img src="http://hits.dwyl.io/yennanliu/spark-etl-pipeline.svg"></a>
 </p>
 
+## File structure
+
+```
+# ├── Dockerfile         : Dockerfile make scala spark env 
+# ├── README.md
+# ├── archived           : legacy spark scripts in python/java...
+# ├── build.sbt          : (scala) sbt file build spark scala dependency 
+# ├── config             : config for various services. e.g. s3, DB, hive..
+# ├── data               : sample data for some spark scripts demo
+# ├── output             : where the spark stream/batch output to  
+# ├── project            : (scala) other sbt setting : plugins.sbt, build.properties...
+# ├── python             : helper python script 
+# ├── run_all_process.sh : script demo run minimum end-to-end spark process
+# ├── script             : helper shell script
+# ├── src                : (scala) MAIN SCALA SPARK TESTS/SCRIPTS 
+# ├── target             : where the final complied jar output to  (e.g. target/scala-2.11/spark-etl-pipeline-assembly-1.0.jar)
+# └── travis_build.sh    : travis build file
+```
 
 ## Prerequisites 
 
 1. Modify [config](https://github.com/yennanliu/spark-etl-pipeline/tree/master/config) with yours and rename them (e.g. `twitter.config.dev` -> `twitter.config`) to access services like data source, file system.. and so on. 
 2. Install SBT as scala dependency management tool 
 3. Install Java, Spark 
+
+
+## Process 
+
+```
+sbt clean compile -> sbt test -> sbt run -> sbt assembly -> spark-submit <spark-script>jar
+```
 
 ## Quick Start
 
@@ -86,32 +111,6 @@ root@942744030b57:~ cd ../spark-etl-pipeline && spark-submit spark-etl-pipeline/
 
 ```
 </details>
-
-## Process 
-
-```
-sbt clean compile -> sbt test -> sbt run -> sbt assembly -> spark-submit <spark-script>jar
-```
-
-## File structure
-
-```
-# ├── Dockerfile         : Dockerfile make scala spark env 
-# ├── README.md
-# ├── archived           : legacy spark scripts in python/java...
-# ├── build.sbt          : (scala) sbt file build spark scala dependency 
-# ├── config             : config for various services. e.g. s3, DB, hive..
-# ├── data               : sample data for some spark scripts demo
-# ├── output             : where the spark stream/batch output to  
-# ├── project            : (scala) other sbt setting : plugins.sbt, build.properties...
-# ├── python             : helper python script 
-# ├── run_all_process.sh : script demo run minimum end-to-end spark process
-# ├── script             : helper shell script
-# ├── src                : (scala) MAIN SCALA SPARK TESTS/SCRIPTS 
-# ├── target             : where the final complied jar output to  (e.g. target/scala-2.11/spark-etl-pipeline-assembly-1.0.jar)
-# └── travis_build.sh    : travis build file
-```
-
 
 ## Ref 
 
