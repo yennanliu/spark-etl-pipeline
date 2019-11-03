@@ -57,6 +57,10 @@ object SparkProcessTitanic{
                 AND Fare IS NOT NULL""")
         df_passenger_pclass_age_fare.printSchema()
         df_passenger_pclass_age_fare.show()
+        var df_passenger_pclass_age_fare_agg = df_passenger_pclass_age_fare.groupBy("PassengerId").agg(
+                                                 sum($"Age") as "sum_Age",
+                                                 count($"Age") as "count_Age")
+        df_passenger_pclass_age_fare_agg.take(30).foreach(println)
 
         sc.stop() 
 }
