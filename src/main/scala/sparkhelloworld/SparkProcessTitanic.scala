@@ -67,6 +67,11 @@ object SparkProcessTitanic{
         var age_fare_count = passenger_pclass_age_fare_rdd.map( x => (x(2), x(3)))
         age_fare_count.collect().foreach(println)
 
+
+        var age = passenger_pclass_age_fare_rdd.map( x => (x(2)))
+        age.collect().foreach(println)
+        //age.values.sum()
+
         sc.stop() 
 }
  } 
