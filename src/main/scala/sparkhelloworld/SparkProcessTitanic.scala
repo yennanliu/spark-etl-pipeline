@@ -64,6 +64,7 @@ object SparkProcessTitanic{
           case null =>"S"
           case a  => a
             }
+
         val embarkedUDF = udf(embarked)
 
         // >>>>>>>>>>>>> SQL 
@@ -120,6 +121,15 @@ object SparkProcessTitanic{
 
         var age = passenger_pclass_age_fare_rdd.map( x => (x(2)))
         age.take(20).foreach(println)
+
+        // val splitRdd = passenger_pclass_age_fare_rdd.flatmap(_.split("  ")).map(_.toInt)
+        // splitRdd.take(30).foreach(println)
+        // avg calculate on RDD 
+        // print (">>>>>>>>>> RDD avg...")
+        // passenger_pclass_age_fare_rdd.map( x => (x(0), (x(1),1)))
+        //                              .reduceByKey{case (x,y) => (x._1 + y._1, x._2 + y._2)}
+        //                              .map( x => (x._1, x._2(0) / x._2(1)))
+        //                              .collect()
 
         print (">>>>>>>>>> write to csv...")
         var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now)
