@@ -8,6 +8,8 @@ import org.apache.spark.sql.functions._
 // scala 
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import java.time.format.DateTimeFormatter
+import java.time.LocalDateTime
 
 object SparkProcessTitanic{
 
@@ -67,10 +69,13 @@ object SparkProcessTitanic{
         var age_fare_count = passenger_pclass_age_fare_rdd.map( x => (x(2), x(3)))
         age_fare_count.collect().foreach(println)
 
-
         var age = passenger_pclass_age_fare_rdd.map( x => (x(2)))
         age.collect().foreach(println)
-        //age.values.sum()
+
+        print (">>>>>>>>>> write to csv...")
+        var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now)
+        var file_name = "output/SparkHelloWorld/output_" + current_time
+        age.saveAsTextFile(file_name)
 
         sc.stop() 
 }
