@@ -5,6 +5,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.SaveMode
 import org.apache.spark.sql.functions.{col, udf}
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType, FloatType}
 // scala 
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -31,8 +32,23 @@ object SparkProcessTitanic{
 
         sc.setLogLevel("ERROR")
         print (">>>>>>>>>>")
+        val dataScheme = (new StructType)
+                        .add("PassengerId", IntegerType)
+                        .add("Survived", IntegerType)
+                        .add("Pclass", IntegerType)
+                        .add("Name", StringType)
+                        .add("Sex", StringType)
+                        .add("Age", FloatType)
+                        .add("SibSp", IntegerType)
+                        .add("Parch", IntegerType)
+                        .add("Ticket", StringType)
+                        .add("Fare", FloatType)
+                        .add("Cabin", StringType)
+                        .add("Embarked", StringType)
+
         var filePath = "data/titanic_train.csv"
         val df = spark.read.format("csv")
+                      .schema(dataScheme)
                       .option("header", "true")
                       .option("inferSchema", "true")
                       .option("delimiter", ",")
