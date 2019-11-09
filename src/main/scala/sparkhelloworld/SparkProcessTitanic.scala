@@ -6,6 +6,7 @@ import org.apache.spark.sql.SaveMode
 import org.apache.spark.sql.functions.{col, udf}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType, FloatType}
+import org.apache.spark.sql._
 // scala 
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -57,13 +58,21 @@ object SparkProcessTitanic{
         // show the df schema 
         df.printSchema()
 
-        // SQL 
+        // >>>>>>>>>>>>> UDF 
+        val embarked: (String => String) = {
+          case "" => "S"
+          case null =>"S"
+          case a  => a
+            }
+        val embarkedUDF = udf(embarked)
+
+        // >>>>>>>>>>>>> SQL 
         df.createOrReplaceTempView("titanic")
         var sample_df =  spark.sql("SELECT * FROM titanic limit 10")
         sample_df.show()
         spark.sql("SELECT Sex, COUNT(*) FROM titanic GROUP BY 1").show()
 
-        // DF 
+        // >>>>>>>>>>>>> DF 
         var df_passenger_pclass_age_fare = spark.sql(
             """SELECT PassengerId, 
                 CAST(Pclass AS FLOAT), 
@@ -80,13 +89,37 @@ object SparkProcessTitanic{
                                                  count($"Age") as "count_Age")
         df_passenger_pclass_age_fare_agg.show()
 
-        // RDD 
+        //calculate average age for filling gaps in dataset
+        val averageAge = df.select("Age")
+          .agg(avg("Age"))
+          .collect() match {
+          case Array(Row(avg: Double)) => avg
+          case _ => 0
+        }
+
+        //calculate average fare for filling gaps in dataset
+        val averageFare = df.select("Fare")
+          .agg(avg("Fare"))
+          .collect() match {
+          case Array(Row(avg: Double)) => avg
+          case _ => 0
+        } 
+
+        println ("averageAge : " + averageAge)
+        println ("averageFare : " + averageFare)
+
+        // filter df 
+        val filledDF = df.na.fill(Map("Fare" -> averageFare, "Age" -> averageAge)) // fill null with avg value 
+        val filledDF2 = filledDF.withColumn("Embarked", embarkedUDF(filledDF.col("Embarked")))  
+        val Array(trainingData, testData) = filledDF2.randomSplit(Array(0.7, 0.3))
+
+        // >>>>>>>>>>>>> RDD 
         var passenger_pclass_age_fare_rdd = df_passenger_pclass_age_fare.rdd 
         var age_fare_count = passenger_pclass_age_fare_rdd.map( x => (x(2), x(3)))
-        age_fare_count.collect().foreach(println)
+        age_fare_count.take(20).foreach(println)
 
         var age = passenger_pclass_age_fare_rdd.map( x => (x(2)))
-        age.collect().foreach(println)
+        age.take(20).foreach(println)
 
         print (">>>>>>>>>> write to csv...")
         var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now)
