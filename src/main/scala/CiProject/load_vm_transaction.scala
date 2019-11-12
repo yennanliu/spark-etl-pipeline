@@ -13,13 +13,13 @@ import org.joda.time.format.DateTimeFormat
 import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
 
-object filter_vm_transaction{
+object load_vm_transaction{
 
     def main(args: Array[String]){
 
         val conf = new SparkConf()
                    .setMaster("local[*]")
-                   .setAppName("filter_vm_transaction")
+                   .setAppName("load_vm_transaction")
 
         var sc = new SparkContext(conf)
 
@@ -31,27 +31,22 @@ object filter_vm_transaction{
 
         import spark.implicits._
 
-
         val accessKeyId = System.getenv("AWS_ACCESS_KEY_ID")
         val secretAccessKey = System.getenv("AWS_SECRET_ACCESS_KEY")
         sc.hadoopConfiguration.set("fs.s3n.awsAccessKeyId", accessKeyId)
         sc.hadoopConfiguration.set("fs.s3n.awsSecretAccessKey", secretAccessKey)
 
-
-
-        println (">>>>>>>>>> write to csv...")
-        //var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-mm").format(LocalDateTime.now)
-        // var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now)
-        // var file_name = "output/SparkHelloWorld/output_" + current_time
-        // age.saveAsTextFile(file_name)
-
-        // println (">>>>>>>>>> write to s3...")
-        // var s3_file_name = "s3a://suntory-data/etl_output/output_" + current_time
-        // filledDF.coalesce(1).write
-        //         .format("com.databricks.spark.csv")
-        //         .option("header", "true")
-        //         .save(s3_file_name)
-
-        // sc.stop() 
+        // load s3 data 
+        var s3_file_path = "s3a://suntory-data/filtered_10_vm_transaction/filtered_10_vm_transaction_2019.csv"
+        val df = spark.read.format("csv")
+                      .option("header", "true")
+                      .option("inferSchema", "true")
+                      .option("delimiter", ",")
+                      .load(s3_file_path)
+        df.printSchema()
+        df.createOrReplaceTempView("transaction")
+        //var df_ =  spark.sql("SELECT * FROM transaction limit 10")
+        spark.sql("SELECT * FROM transaction limit 10").show()
+        sc.stop()
 }
  } 
