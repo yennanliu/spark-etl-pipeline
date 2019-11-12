@@ -41,7 +41,7 @@ object SparkProcessTitanic{
 
         sc.setLogLevel("ERROR")
         print (">>>>>>>>>>")
-        val dataScheme = (new StructType)
+        val dataSchema = (new StructType)
                         .add("PassengerId", IntegerType)
                         .add("Survived", IntegerType)
                         .add("Pclass", IntegerType)
@@ -57,7 +57,7 @@ object SparkProcessTitanic{
 
         var filePath = "data/titanic_train.csv"
         val df = spark.read.format("csv")
-                      .schema(dataScheme)
+                      .schema(dataSchema)
                       .option("header", "true")
                       .option("inferSchema", "true")
                       .option("delimiter", ",")
