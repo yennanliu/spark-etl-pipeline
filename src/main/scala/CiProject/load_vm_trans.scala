@@ -13,13 +13,13 @@ import org.joda.time.format.DateTimeFormat
 import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
 
-object load_vm_transaction{
+object load_vm_trans{
 
     def main(args: Array[String]){
 
         val conf = new SparkConf()
                    .setMaster("local[*]")
-                   .setAppName("load_vm_transaction")
+                   .setAppName("load_vm_trans")
 
         var sc = new SparkContext(conf)
 
