@@ -15,6 +15,7 @@ target/*
 *.class
 pair.parquet/
 twitter.config
+s3.config
 checkpointing
 checkpoints/
 derby.log
