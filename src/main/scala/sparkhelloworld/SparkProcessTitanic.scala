@@ -6,7 +6,7 @@ import org.apache.spark.sql.SaveMode
 import org.apache.spark.sql.functions.{col, udf}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType, FloatType}
-import org.apache.spark.sql._
+import org.apache.spark.sql.Row
 // scala 
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -30,7 +30,9 @@ object SparkProcessTitanic{
                     .getOrCreate()
 
         import spark.implicits._
-
+        // S3 
+        //import util.S3Loader
+        //S3Loader.initialize()
 
         val accessKeyId = System.getenv("AWS_ACCESS_KEY_ID")
         val secretAccessKey = System.getenv("AWS_SECRET_ACCESS_KEY")
@@ -138,7 +140,8 @@ object SparkProcessTitanic{
         //                              .collect()
 
         println (">>>>>>>>>> write to csv...")
-        var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now)
+        //var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-mm").format(LocalDateTime.now)
+        var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now)
         var file_name = "output/SparkHelloWorld/output_" + current_time
         age.saveAsTextFile(file_name)
 
