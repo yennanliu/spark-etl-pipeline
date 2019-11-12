@@ -31,6 +31,12 @@ object SparkProcessTitanic{
 
         import spark.implicits._
 
+
+        val accessKeyId = System.getenv("AWS_ACCESS_KEY_ID")
+        val secretAccessKey = System.getenv("AWS_SECRET_ACCESS_KEY")
+        sc.hadoopConfiguration.set("fs.s3n.awsAccessKeyId", accessKeyId)
+        sc.hadoopConfiguration.set("fs.s3n.awsSecretAccessKey", secretAccessKey)
+
         sc.setLogLevel("ERROR")
         print (">>>>>>>>>>")
         val dataScheme = (new StructType)
@@ -131,10 +137,17 @@ object SparkProcessTitanic{
         //                              .map( x => (x._1, x._2(0) / x._2(1)))
         //                              .collect()
 
-        print (">>>>>>>>>> write to csv...")
+        println (">>>>>>>>>> write to csv...")
         var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now)
         var file_name = "output/SparkHelloWorld/output_" + current_time
         age.saveAsTextFile(file_name)
+
+        println (">>>>>>>>>> write to s3...")
+        var s3_file_name = "s3a://suntory-data/etl_output/output_" + current_time
+        filledDF.coalesce(1).write
+                .format("com.databricks.spark.csv")
+                .option("header", "true")
+                .save(s3_file_name)
 
         sc.stop() 
 }
