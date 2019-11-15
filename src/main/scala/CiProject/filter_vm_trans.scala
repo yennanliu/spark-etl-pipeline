@@ -84,15 +84,21 @@ object filter_vm_trans{
 
         // load s3 data 
         var s3_file_path = "s3a://suntory-data/etl_test_data/filtered_10_vm_transaction_2019.csv.zip"
-        val df = spark.read.format("csv")
-                           .schema(dataSchema)
-                           .option("sep", "\t")
-                           .option("header", "true")
-                           .option("inferSchema", "true")
-                           .option("delimiter", ",")
-                           .option("compression","gzip")
-                           .load(s3_file_path)
-                           // .option("multiline", "true")
+        // val df = spark.read.format("csv")
+        //                    .schema(dataSchema)
+        //                    .option("sep", "\t")
+        //                    .option("header", "true")
+        //                    .option("inferSchema", "true")
+        //                    .option("delimiter", ",")
+        //                    .option("compression","gzip")
+        //                    .load(s3_file_path)
+        //                    // .option("multiline", "true")
+
+          val df = spark.read
+                        .option("sep", "\t")
+                        .option("header", "true")
+                        .schema(dataSchema)
+                        .csv(s3_file_path)
 
         df.printSchema()
         df.createOrReplaceTempView("transaction")
