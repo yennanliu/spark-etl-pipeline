@@ -3,7 +3,7 @@ package CiProject
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession 
 import org.apache.spark.sql.SaveMode
-import org.apache.spark.sql.functions.{col, udf}
+import org.apache.spark.sql.functions.{col, udf, expr}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType, FloatType}
 import org.apache.spark.sql.Row
@@ -54,26 +54,30 @@ object get_feature_vm_trans{
                .format("com.databricks.spark.csv")
                .option("header", "true")
                .save(s3_file_name) }
-                          
+              
         var df = load_s3_file_2_df(s3_file_path)    
         df.printSchema()
 
-        println (">>>>>>>>>> write to s3...")
+        println (">>>>>>>>>> process feature ...")
         df.createOrReplaceTempView("transaction")
         var query = """ SELECT 
-                        sales_date AS sales_date,
-                        sum(sales_quantity) AS day_sale_quantity,
-                        sum(sales_after_supply) AS day_sales_after_supply
+                        sales_date,
+                        sales_quantity,
+                        sales_after_supply,
+                        column_no,
+                        selling_price
                         FROM TRANSACTION
-                        GROUP BY 1
-                        ORDER BY 1
-                        LIMIT 10
+                        LIMIT 100
                     """
         var df_ = spark.sql(query)
+        // process feature 
+        val myExpression = "sales_quantity+sales_after_supply"
+        var df_feature = df_.withColumn("sales_sum_before_after_supply",expr(myExpression))
+
+        println (">>>>>>>>>> write to s3...")
         var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now)
         var s3_file_name = "s3a://suntory-data/etl_output/get_feature_vm_trans_" + current_time
-
-        upload_df_2_s3(s3_file_name, df_)
+        upload_df_2_s3(s3_file_name, df_feature)
 
         sc.stop()
 }
