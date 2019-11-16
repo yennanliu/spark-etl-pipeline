@@ -94,11 +94,17 @@ object filter_vm_trans{
         //                    .load(s3_file_path)
         //                    // .option("multiline", "true")
 
-          val df = spark.read
-                        .option("sep", "\t")
-                        .option("header", "true")
-                        .schema(dataSchema)
-                        .csv(s3_file_path)
+          // val df = spark.read
+          //               .option("sep", "\t")
+          //               .option("header", "true")
+          //               .schema(dataSchema)
+          //               .csv(s3_file_path)
+
+        var df = spark.read
+                      .format("csv")        
+                      .option("delimiter", ",") 
+                      .schema(dataSchema)     
+                      .load(s3_file_path)
 
         df.printSchema()
         df.createOrReplaceTempView("transaction")

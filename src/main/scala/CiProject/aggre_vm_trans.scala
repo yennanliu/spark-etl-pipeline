@@ -7,11 +7,14 @@ import org.apache.spark.sql.functions.{col, udf}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{StructType, StructField, StringType, IntegerType, FloatType}
 import org.apache.spark.sql.Row
+import org.apache.spark.sql.DataFrame
 // scala 
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
+// UDF 
+import util.SparkS3Utility
 
 object aggre_vm_trans{
 
@@ -39,24 +42,26 @@ object aggre_vm_trans{
         // load s3 data 
         var s3_file_path = "s3a://suntory-data/etl_test_data/filtered_10_vm_transaction_2019.csv"
 
-        var df = spark.read
-                      .format("csv") 
-                      .option("header", "true")       
-                      .option("delimiter", ",") 
-                      .load(s3_file_path)
-                      
+        var df = SparkS3Utility.load_s3_file_2_df(s3_file_path)
+
         df.printSchema()
 
         println (">>>>>>>>>> write to s3...")
         df.createOrReplaceTempView("transaction")
-        var df_ = spark.sql("SELECT sales_date as sales_date, sum(sales_quantity) as day_sale_quantity FROM transaction group by 1 order by 1 limit 10")
+        
+        var query = """ SELECT 
+                sales_date AS sales_date,
+                sum(sales_quantity) AS day_sale_quantity,
+                sum(sales_after_supply) AS day_sales_after_supply
+                FROM TRANSACTION
+                GROUP BY 1
+                ORDER BY 1
+                LIMIT 10"""
+        var df_ = spark.sql(query)
         var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now)
         var s3_file_name = "s3a://suntory-data/etl_output/aggre_vm_trans_" + current_time
-        df_.coalesce(1)
-           .write
-           .format("com.databricks.spark.csv")
-           .option("header", "true")
-           .save(s3_file_name)
+
+        SparkS3Utility.upload_df_2_s3(s3_file_name, df_)
 
         sc.stop()
 }
