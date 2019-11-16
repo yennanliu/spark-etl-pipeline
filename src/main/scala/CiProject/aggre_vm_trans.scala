@@ -19,13 +19,13 @@ object aggre_vm_trans{
 
         val conf = new SparkConf()
                    .setMaster("local[*]")
-                   .setAppName("filter_vm_trans")
+                   .setAppName("aggre_vm_trans")
 
         var sc = new SparkContext(conf)
 
         val spark = SparkSession
                     .builder
-                    .appName("Spark sql demo")
+                    .appName("aggre_vm_trans")
                     .config("spark.master", "local")
                     .getOrCreate()
 
@@ -44,12 +44,12 @@ object aggre_vm_trans{
                       .option("header", "true")       
                       .option("delimiter", ",") 
                       .load(s3_file_path)
-
+                      
         df.printSchema()
-        df.createOrReplaceTempView("transaction")
-        var df_ = spark.sql("SELECT sales_date as sales_date, sum(sales_quantity) as day_sale_quantity FROM transaction group by 1 order by 1 limit 10")
 
         println (">>>>>>>>>> write to s3...")
+        df.createOrReplaceTempView("transaction")
+        var df_ = spark.sql("SELECT sales_date as sales_date, sum(sales_quantity) as day_sale_quantity FROM transaction group by 1 order by 1 limit 10")
         var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now)
         var s3_file_name = "s3a://suntory-data/etl_output/aggre_vm_trans_" + current_time
         df_.coalesce(1)
