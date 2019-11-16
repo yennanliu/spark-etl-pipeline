@@ -35,7 +35,7 @@ object aggre_vm_trans{
         val secretAccessKey = System.getenv("AWS_SECRET_ACCESS_KEY")
         sc.hadoopConfiguration.set("fs.s3n.awsAccessKeyId", accessKeyId)
         sc.hadoopConfiguration.set("fs.s3n.awsSecretAccessKey", secretAccessKey)
-        
+
         // load s3 data 
         var s3_file_path = "s3a://suntory-data/etl_test_data/filtered_10_vm_transaction_2019.csv"
 
@@ -47,8 +47,7 @@ object aggre_vm_trans{
 
         df.printSchema()
         df.createOrReplaceTempView("transaction")
-        var df_ = spark.sql("SELECT * FROM transaction limit 10")
-        spark.sql("SELECT * FROM transaction limit 10").show()
+        var df_ = spark.sql("SELECT sales_date as sales_date, sum(sales_quantity) as day_sale_quantity FROM transaction group by 1 order by 1 limit 10")
 
         println (">>>>>>>>>> write to s3...")
         var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now)
