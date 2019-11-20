@@ -53,6 +53,21 @@ object SparkTitanicETL{
             .transform(modify_ticket())
         }
 
+        def S3Writer()(df: DataFrame): Unit = {
+          var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now)
+          val path = "s3a://suntory-data/etl_output/SparkTitanicETL_output_" + current_time
+          df.write.mode(SaveMode.Overwrite).parquet(path)
+        }
+
+        def stop_spark_process(): Unit = { sc.stop() }
+
+        case class EtlDefinition(
+            sourceDF: DataFrame,
+            transform: (DataFrame => DataFrame),
+            write: (DataFrame => Unit),
+            metadata: scala.collection.mutable.Map[String, Any] = scala.collection.mutable.Map[String, Any]()
+            ) { def process(): Unit = { write(sourceDF.transform(transform)) } }
+
         // UDF 
 
         print (">>>>>>>>>>")
@@ -78,26 +93,16 @@ object SparkTitanicETL{
                       .option("delimiter", ",")
                       .load(filePath)
 
-        val df_repartition = df.repartition(1000)
+        val df_repartition = df.repartition(100)
         var df_repartition_modified =  df_repartition.transform(modify_df())
 
-        // show the df schema / df 
-        df.printSchema()
-        df_repartition.show()
-        df_repartition_modified.show()
+        println (">>>>>>>>>> run ETL...")
+        val etl = new EtlDefinition(
+          sourceDF = df_repartition,
+          transform = modify_df(),
+          write = S3Writer() )
 
-        println (">>>>>>>>>> write to csv...")
-        //var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-mm").format(LocalDateTime.now)
-        var current_time = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now)
-        var file_name = "output/SparkTitanicETL/output_" + current_time
-        //df_repartition.saveAsTextFile(file_name)
-
-        println (">>>>>>>>>> write to s3...")
-        var s3_file_name = "s3a://suntory-data/etl_output/SparkTitanicETL_output_" + current_time
-        df_repartition_modified.coalesce(1).write
-                .format("com.databricks.spark.csv")
-                .option("header", "true")
-                .save(s3_file_name)
+        etl.process()
 
         sc.stop() 
 }
