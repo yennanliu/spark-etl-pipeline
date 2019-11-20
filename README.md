@@ -49,7 +49,7 @@ sbt clean compile -> sbt test -> sbt run -> sbt assembly -> spark-submit <spark-
 ## Quick Start
 
 ```bash
-$ bash run_all_process.sh
+$ git clone https://github.com/yennanliu/spark-etl-pipeline.git && cd spark-etl-pipeline && bash run_all_process.sh
 ```
 
 ## Quick Start Manually
