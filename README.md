@@ -77,6 +77,20 @@ $ sbt assembly
 $ spark-submit spark-etl-pipeline/target/scala-2.11/spark-etl-pipeline-assembly-1.0.jar
 
 ```
+
+```bash
+# get fake page view event data 
+
+# run the script generate page view 
+$ sbt package
+$ spark-submit \
+  --class DataGenerator.PageViewDataGenerator \
+  target/scala-2.11/spark-etl-pipeline_2.11-1.0.jar
+
+# open the other terminal to receive the event
+$ curl 127.0.0.1:44444
+
+```
 </details> 
 
 ## Quick Start Docker
